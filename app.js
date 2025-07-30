@@ -1,8 +1,8 @@
 // Wedding RSVP Website JavaScript
-// Thiago & Juliana - 07 de Setembro 2025
+// Thiago & Juliana - September 7, 2025
 
 document.addEventListener('DOMContentLoaded', function () {
-    emailjs.init('n2MylDf00cBbRnG1P'); // ✅ Inicializado apenas uma vez
+    emailjs.init('n2MylDf00cBbRnG1P'); // ✅ Initialized only once
     initCountdown();
     initNavigation();
     initRSVPForm();
@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function () {
     initMapFunctionality();
 });
 
-// CONTADOR REGRESSIVO
+// COUNTDOWN TIMER
 function initCountdown() {
-    const weddingDate = new Date('2025-09-07T15:30:00').getTime(); // ✅ Corrigido para 15:30h
+    const weddingDate = new Date('2025-09-07T15:30:00').getTime(); // ✅ Set to 3:30 PM
 
     function updateCountdown() {
         const now = new Date().getTime();
@@ -35,7 +35,7 @@ function initCountdown() {
                 countdownContainer.innerHTML = `
                     <div class="countdown__celebration">
                         <span class="countdown__number">🎉</span>
-                        <span class="countdown__label">Casamos!</span>
+                        <span class="countdown__label">We got married!</span>
                     </div>
                 `;
             }
@@ -53,7 +53,7 @@ function initCountdown() {
     setInterval(updateCountdown, 1000);
 }
 
-// NAVEGAÇÃO
+// NAVIGATION
 function initNavigation() {
     const navLinks = document.querySelectorAll('.nav__link');
 
@@ -107,30 +107,30 @@ function initRSVPForm() {
 }
 
 function initFormConditionals() {
-    const confirmacaoSelect = document.getElementById('confirmacao');
-    const acompanhantesGroup = document.getElementById('acompanhantes-group');
-    const observacoesLabel = document.getElementById('observacoes-label');
-    const observacoesField = document.getElementById('observacoes');
+    const confirmationSelect = document.getElementById('confirmacao');
+    const guestsGroup = document.getElementById('acompanhantes-group');
+    const notesLabel = document.getElementById('observacoes-label');
+    const notesField = document.getElementById('observacoes');
     const submitButton = document.querySelector('#rsvp-form button[type="submit"]');
 
-    if (confirmacaoSelect && acompanhantesGroup) {
-        confirmacaoSelect.addEventListener('change', function () {
+    if (confirmationSelect && guestsGroup) {
+        confirmationSelect.addEventListener('change', function () {
             if (this.value === 'Não') {
-                acompanhantesGroup.style.display = 'none';
+                guestsGroup.style.display = 'none';
                 document.getElementById('acompanhantes').value = '0';
-                observacoesLabel.textContent = 'Deixe uma mensagem para os noivos 💌';
-                observacoesField.placeholder = 'Escreva aqui sua mensagem, carinho ou desejo 💖';
-                if (submitButton) submitButton.textContent = 'Finalizar';
+                notesLabel.textContent = 'Leave a message for the couple 💌';
+                notesField.placeholder = 'Write your message, wishes or kind words 💖';
+                if (submitButton) submitButton.textContent = 'Submit';
             } else if (this.value === 'Sim') {
-                acompanhantesGroup.style.display = 'block';
-                observacoesLabel.textContent = 'Restrições alimentares ou observações';
-                observacoesField.placeholder = 'Ex.: Vegetariano, alergia, etc.';
-                if (submitButton) submitButton.textContent = 'Confirmar Presença 💝';
+                guestsGroup.style.display = 'block';
+                notesLabel.textContent = 'Dietary restrictions or notes';
+                notesField.placeholder = 'E.g., Vegetarian, allergies, etc.';
+                if (submitButton) submitButton.textContent = 'Confirm Attendance 💝';
             } else {
-                acompanhantesGroup.style.display = 'none';
-                observacoesLabel.textContent = 'Restrições alimentares ou observações';
-                observacoesField.placeholder = 'Ex.: Vegetariano, alergia, etc.';
-                if (submitButton) submitButton.textContent = 'Confirmar Presença 💝';
+                guestsGroup.style.display = 'none';
+                notesLabel.textContent = 'Dietary restrictions or notes';
+                notesField.placeholder = 'E.g., Vegetarian, allergies, etc.';
+                if (submitButton) submitButton.textContent = 'Confirm Attendance 💝';
             }
         });
     }
@@ -145,31 +145,31 @@ async function handleFormSubmit(e) {
     if (!validateForm(form)) return;
 
     const originalText = submitButton.textContent;
-    submitButton.textContent = 'Enviando... 💌';
+    submitButton.textContent = 'Sending... 💌';
     submitButton.disabled = true;
 
     const rsvpData = {
         nome: formData.get('nome'),
         email: formData.get('email'),
-        telefone: formData.get('telefone') || 'Não informado',
+        telefone: formData.get('telefone') || 'Not provided',
         confirmacao: formData.get('confirmacao'),
         acompanhantes: formData.get('acompanhantes') || '0',
-        observacoes: formData.get('observacoes') || 'Nenhuma',
+        observacoes: formData.get('observacoes') || 'None',
         timestamp: new Date().toLocaleString('pt-BR'),
         local: 'Qiosque Moana - Barra da Tijuca, RJ',
-        data: '07 de Setembro de 2025',
-        horarios: 'Cerimônia: 15:30h | Recepção: no mesmo local'
+        data: 'September 7, 2025',
+        horarios: 'Ceremony: 3:30 PM | Reception: same location'
     };
 
     try {
         const result = await emailjs.send('service_8c7kan5', 'template_kwb4w5u', rsvpData);
-        console.log('✅ Email enviado com sucesso:', result);
+        console.log('✅ Email sent successfully:', result);
         showConfirmationMessage();
         form.reset();
         initFormConditionals();
     } catch (error) {
-        console.error('❌ Erro ao enviar RSVP:', error);
-        showErrorMessage('Ocorreu um erro ao enviar sua confirmação. Tente novamente ou entre em contato conosco diretamente.');
+        console.error('❌ Error sending RSVP:', error);
+        showErrorMessage('An error occurred while sending your RSVP. Please try again or contact us directly.');
     } finally {
         submitButton.textContent = originalText;
         submitButton.disabled = false;
@@ -183,7 +183,7 @@ function validateForm(form) {
 
     requiredFields.forEach(field => {
         if (!field.value.trim()) {
-            showFieldError(field, 'Este campo é obrigatório');
+            showFieldError(field, 'This field is required');
             isValid = false;
         } else {
             clearFieldError(field);
@@ -192,7 +192,7 @@ function validateForm(form) {
 
     const emailField = form.querySelector('#email');
     if (emailField && !isValidEmail(emailField.value)) {
-        showFieldError(emailField, 'Por favor, insira um email válido');
+        showFieldError(emailField, 'Please enter a valid email');
         isValid = false;
     }
 
@@ -200,7 +200,7 @@ function validateForm(form) {
     const acompanhantes = form.querySelector('#acompanhantes').value;
 
     if (confirmacao === 'Sim' && acompanhantes && acompanhantes.split('\n').length > 5) {
-        showFieldError(form.querySelector('#acompanhantes'), 'Máximo de 5 acompanhantes permitido');
+        showFieldError(form.querySelector('#acompanhantes'), 'Maximum of 5 guests allowed');
         isValid = false;
     }
 
@@ -235,32 +235,32 @@ function showConfirmationMessage() {
     const confirmacao = document.getElementById('confirmacao').value;
 
     if (form && confirmationMessage) {
-        let mensagem = '';
+        let message = '';
 
         if (confirmacao === 'Não') {
-            mensagem = `
+            message = `
                 <div class="confirmation-message__icon">💌</div>
-                <h3>Mensagem Recebida!</h3>
-                <p>Sentiremos sua ausência, mas agradecemos de coração por nos avisar. 💌 Que possamos nos ver em uma próxima celebração!</p>
+                <h3>Message Received!</h3>
+                <p>We’ll miss you, but thank you for letting us know. 💌 We hope to see you at another celebration!</p>
                 <a href="https://thiagotms1.github.io/listadecasamento/" target="_blank" class="btn btn--primary" style="margin-top: 16px;">
-                    🎁 Acessar Lista de Casamento
+                    🎁 View Wedding Gift List
                 </a>
             `;
         } else {
-            mensagem = `
+            message = `
                 <div class="confirmation-message__icon">✅</div>
-                <h3>Confirmação Recebida!</h3>
-                <p>Obrigado por confirmar sua presença. Aguardamos vocês no nosso grande dia!</p>
-                <p><small>Local: Qiosque Moana - Barra da Tijuca, RJ<br>
-                Data: 07 de Setembro de 2025 (Domingo)<br>
-                Cerimônia: 15:30h | Recepção: No mesmo Local</small></p>
+                <h3>RSVP Received!</h3>
+                <p>Thank you for confirming your attendance. We look forward to seeing you on our big day!</p>
+                <p><small>Location: Qiosque Moana - Barra da Tijuca, RJ<br>
+                Date: September 7, 2025 (Sunday)<br>
+                Ceremony: 3:30 PM | Reception: Same location</small></p>
                 <a href="https://thiagotms1.github.io/listadecasamento/" target="_blank" class="btn btn--primary" style="margin-top: 16px;">
-                    🎁 Acessar Lista de Casamento
+                    🎁 View Wedding Gift List
                 </a>
             `;
         }
 
-        confirmationMessage.innerHTML = mensagem;
+        confirmationMessage.innerHTML = message;
         form.classList.add('hidden');
         confirmationMessage.classList.remove('hidden');
         confirmationMessage.classList.add('fade-in');
@@ -299,7 +299,7 @@ function showErrorMessage(message) {
     }, 5000);
 }
 
-// VOLTAR AO TOPO
+// BACK TO TOP
 function initBackToTop() {
     const backToTopButton = document.getElementById('back-to-top');
     if (backToTopButton) {
@@ -314,13 +314,13 @@ function initBackToTop() {
     }
 }
 
-// MAPA
+// MAP
 function initMapFunctionality() {
     const mapIframe = document.querySelector('.map-container iframe');
     if (mapIframe) {
         const loadingIndicator = document.createElement('div');
         loadingIndicator.className = 'map-loading';
-        loadingIndicator.innerHTML = '📍 Carregando mapa...';
+        loadingIndicator.innerHTML = '📍 Loading map...';
         loadingIndicator.style.cssText = `
             position: absolute;
             top: 50%;
